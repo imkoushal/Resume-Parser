@@ -1,0 +1,40 @@
+<div class="history-container">
+  <h1>📜 Analysis History</h1>
+  <p class="subtitle">Your previous resume analyses</p>
+
+  <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+  <div class="loading" *ngIf="loading">Loading history...</div>
+
+  <div class="empty-state" *ngIf="!loading && history.length === 0 && !error">
+    <p>No analysis history yet.</p>
+    <a routerLink="/upload" class="btn-primary">Analyze Your First Resume</a>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && history.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ATS Score</th>
+          <th>Matched Skills</th>
+          <th>Missing Skills</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of history; let i = index">
+          <td class="row-num">{{ i + 1 }}</td>
+          <td>
+            <span class="score-badge" [style.color]="getScoreColor(item.ats_score)">
+              {{ item.ats_score }}
+            </span>
+          </td>
+          <td>{{ item.matched_skills.length }}</td>
+          <td>{{ item.missing_skills.length }}</td>
+          <td class="date-cell">{{ formatDate(item.created_at) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

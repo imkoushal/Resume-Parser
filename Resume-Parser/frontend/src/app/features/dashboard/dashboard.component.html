@@ -1,0 +1,83 @@
+<div class="dashboard-container" *ngIf="result; else noData">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <h1>📊 Analysis Results</h1>
+    <p class="candidate-info" *ngIf="result.name">
+      {{ result.name }} <span *ngIf="result.email">• {{ result.email }}</span>
+    </p>
+  </div>
+
+  <!-- Score Cards Row -->
+  <div class="scores-row">
+
+    <!-- ATS Doughnut -->
+    <div class="score-card ats-card">
+      <h3>ATS Score</h3>
+      <div class="chart-wrapper">
+        <canvas baseChart [data]="doughnutData" [options]="doughnutOptions" type="doughnut"></canvas>
+        <div class="score-overlay">
+          <span class="score-value">{{ result.ats_score }}</span>
+          <span class="score-label">{{ getScoreLabel(result.ats_score) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breakdown Bar Chart -->
+    <div class="score-card breakdown-card">
+      <h3>Score Breakdown</h3>
+      <canvas baseChart [data]="barData" [options]="barOptions" type="bar"></canvas>
+    </div>
+
+  </div>
+
+  <!-- Skills Section -->
+  <div class="skills-row">
+    <div class="skills-card matched">
+      <h3>✅ Matched Skills <span class="count">({{ result.matched_skills.length }})</span></h3>
+      <div class="skill-tags">
+        <span class="tag tag-match" *ngFor="let skill of result.matched_skills">{{ skill }}</span>
+        <span class="empty-state" *ngIf="result.matched_skills.length === 0">No matched skills</span>
+      </div>
+    </div>
+
+    <div class="skills-card missing">
+      <h3>❌ Missing Skills <span class="count">({{ result.missing_skills.length }})</span></h3>
+      <div class="skill-tags">
+        <span class="tag tag-missing" *ngFor="let skill of result.missing_skills">{{ skill }}</span>
+        <span class="empty-state" *ngIf="result.missing_skills.length === 0">No missing skills</span>
+      </div>
+    </div>
+
+    <div class="skills-card all-skills">
+      <h3>🧩 All Skills <span class="count">({{ result.skills.length }})</span></h3>
+      <div class="skill-tags">
+        <span class="tag tag-all" *ngFor="let skill of result.skills">{{ skill }}</span>
+        <span class="empty-state" *ngIf="result.skills.length === 0">No skills detected</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <div class="recommendations-card" *ngIf="result.suggestions.length > 0">
+    <h3>💡 Recommendations</h3>
+    <div class="suggestion" *ngFor="let s of result.suggestions">
+      <span class="suggestion-badge" [attr.data-category]="s.category">{{ s.category }}</span>
+      <p>{{ s.message }}</p>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <a routerLink="/upload" class="btn-secondary">Analyze Another Resume</a>
+  </div>
+
+</div>
+
+<ng-template #noData>
+  <div class="no-data">
+    <h2>No results to display</h2>
+    <p>Upload a resume first to see analysis results.</p>
+    <a routerLink="/upload" class="btn-primary">Go to Upload</a>
+  </div>
+</ng-template>

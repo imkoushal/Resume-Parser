@@ -1,5 +1,10 @@
-streamlit
+fastapi
+uvicorn[standard]
+python-multipart
 spacy
 pdfplumber
 python-docx
 scikit-learn
+motor
+python-jose[cryptography]
+passlib[bcrypt]

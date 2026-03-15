@@ -1,17 +1,17 @@
-# 📄 Resume Parser
+# 📄 Resume Intelligence Platform
 
-A Python-based resume parsing tool that extracts key information from resumes, identifies skills, and matches candidates against job descriptions — all through an interactive Streamlit web interface.
+A Python-based REST API for parsing resumes, extracting skills, and matching candidates against job descriptions — built with FastAPI.
 
 ---
 
 ## 🚀 Features
 
-- 📂 **Multi-format Support** — Parse resumes in PDF, DOCX, and TXT formats
+- 📂 **Multi-format Support** — Parse resumes in PDF and DOCX formats
 - 🔍 **Skill Extraction** — Identify technical and soft skills using a curated skills database
 - 🤝 **JD Matching** — Compare resumes against job descriptions using TF-IDF vectorization and cosine similarity
 - 📊 **Gap Analysis** — Highlight missing skills between a resume and a job description
 - 🧹 **Text Cleaning** — Normalize and clean extracted text for better accuracy
-- 🌐 **Streamlit UI** — Clean, interactive web interface for uploading resumes and viewing results
+- ⚡ **REST API** — Clean, scalable FastAPI backend with structured JSON responses
 
 ---
 
@@ -20,31 +20,52 @@ A Python-based resume parsing tool that extracts key information from resumes, i
 | Technology | Purpose |
 |---|---|
 | Python 3.8+ | Core language |
-| Streamlit | Web interface |
+| FastAPI | REST API framework |
+| Uvicorn | ASGI server |
 | spaCy | NLP pipeline & entity recognition |
-| pdfplumber / PyMuPDF | PDF text extraction |
+| pdfplumber | PDF text extraction |
 | python-docx | DOCX file parsing |
 | scikit-learn | TF-IDF vectorization & cosine similarity |
-| pandas / numpy | Data handling |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-Resume-Parser/
+resume-intelligence-platform/
 │
-├── app.py                  # Main Streamlit application entry point
-├── src/
-│   ├── __init__.py         # Package initializer
-│   ├── resume_parser.py    # Core resume parsing logic
-│   ├── jd_matcher.py       # Job description matching & scoring
-│   ├── skill_extractor.py  # Skill identification and extraction
-│   └── text_extractor.py   # Raw text extraction from PDF/DOCX/TXT
+├── app.py                         # FastAPI entry point
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
 ├── data/
-│   └── skills_list.txt     # Curated list of known skills
-├── requirements.txt        # Project dependencies
-└── README.md               # Project documentation
+│   └── skills_list.txt            # Curated skills database
+│
+└── src/
+    ├── __init__.py
+    │
+    ├── core/
+    │   ├── __init__.py
+    │   └── config.py              # Centralized settings & paths
+    │
+    ├── routes/
+    │   ├── __init__.py
+    │   └── resume_routes.py       # API endpoint definitions
+    │
+    ├── services/
+    │   ├── __init__.py
+    │   ├── text_extractor.py      # PDF/DOCX text extraction
+    │   ├── resume_parser.py       # Resume parsing pipeline
+    │   ├── skill_extractor.py     # Skill identification
+    │   └── jd_matcher.py          # JD matching & scoring
+    │
+    ├── models/
+    │   ├── __init__.py
+    │   └── response_models.py     # Pydantic response schemas
+    │
+    └── utils/
+        └── __init__.py
 ```
 
 ---
@@ -81,10 +102,39 @@ Resume-Parser/
 ## ▶️ How to Run
 
 ```bash
-streamlit run app.py
+uvicorn app:app --reload
 ```
 
-The app will open automatically in your default web browser at `http://localhost:8501`.
+The API will be available at `http://localhost:8000`.
+
+Interactive API docs (Swagger UI) available at: `http://localhost:8000/docs`
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/health` | Health check |
+| `POST` | `/parse-resume` | Upload resume → full parsed data |
+| `POST` | `/extract-skills` | Upload resume → skills list only |
+| `POST` | `/match-job-description` | Upload resume + JD → match report |
+| `POST` | `/analyze-resume` | Upload resume + optional JD → full analysis |
+
+### Example: Parse a Resume
+
+```bash
+curl -X POST -F "file=@resume.pdf" http://localhost:8000/parse-resume
+```
+
+### Example: Match Against a Job Description
+
+```bash
+curl -X POST \
+  -F "file=@resume.pdf" \
+  -F "job_description=We need a Python developer with 3+ years experience..." \
+  http://localhost:8000/match-job-description
+```
 
 ---
 
@@ -92,43 +142,40 @@ The app will open automatically in your default web browser at `http://localhost
 
 | Module | Description |
 |---|---|
-| `app.py` | Streamlit application — UI, routing, and user interaction |
-| `resume_parser.py` | Orchestrates the full resume parsing pipeline |
-| `jd_matcher.py` | Matches resume against job description using TF-IDF cosine similarity + skill overlap |
-| `skill_extractor.py` | Extracts and categorizes skills from text |
-| `text_extractor.py` | Reads and extracts raw text from PDF/DOCX/TXT files |
+| `app.py` | FastAPI application — creates app, CORS, includes routes |
+| `src/core/config.py` | Centralized paths and settings |
+| `src/routes/resume_routes.py` | API endpoint definitions |
+| `src/services/resume_parser.py` | Orchestrates the full resume parsing pipeline |
+| `src/services/jd_matcher.py` | Matches resume against JD using TF-IDF + skill overlap |
+| `src/services/skill_extractor.py` | Extracts and categorizes skills from text |
+| `src/services/text_extractor.py` | Reads raw text from PDF/DOCX files |
+| `src/models/response_models.py` | Pydantic schemas for all API responses |
 
 ---
 
 ## 🧮 How JD Matching Works
 
-The job description matching in `jd_matcher.py` uses two complementary strategies:
+The job description matching uses two complementary strategies:
 
 1. **Skill-set matching (70% weight)** — Extracts known skills from both the resume and the job description using a curated skills list, then computes a coverage score (`matched skills ÷ total JD skills`).
 
 2. **TF-IDF cosine similarity (30% weight)** — Vectorizes the full resume text and JD text using TF-IDF (unigrams + bigrams) and measures lexical overlap via cosine similarity.
 
-The final match score is a weighted blend of both. This is **lexical text matching**, not deep semantic understanding.
+The final match score is a weighted blend of both.
 
 ---
 
 ## ⚠️ Limitations
 
-- **Lexical matching only** — JD matching is based on TF-IDF and keyword overlap. It does not understand meaning or context (no semantic embeddings are used).
-- **Approximate experience calculation** — Years of experience are extracted using a regex pattern on the raw text and may not always be accurate.
-- **Skills list dependent** — Skill extraction relies on a curated `skills_list.txt`; unlisted or novel skills may not be detected.
-
----
-
-## 🌐 Live Deployment
-
-Deployed using Streamlit Community Cloud. URL will be provided.
+- **Lexical matching only** — JD matching is based on TF-IDF and keyword overlap. It does not understand meaning or context.
+- **Approximate experience calculation** — Years of experience are extracted using regex and may not always be accurate.
+- **Skills list dependent** — Skill extraction relies on a curated `skills_list.txt`; unlisted skills may not be detected.
 
 ---
 
 ## 📖 Academic Usage Note
 
-This project was developed as part of an academic submission. All source code is original and intended for educational purposes. The application demonstrates practical use of NLP techniques including named entity recognition, TF-IDF vectorization, and cosine similarity for resume analysis and job description matching.
+This project was developed as part of an academic submission. All source code is original and intended for educational purposes.
 
 ---
 

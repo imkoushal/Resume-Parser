@@ -1,0 +1,35 @@
+<div class="upload-container">
+  <div class="upload-card">
+    <h1>📄 Upload Resume</h1>
+    <p class="subtitle">Upload your resume for intelligent analysis</p>
+
+    <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+    <!-- Drop zone -->
+    <div class="drop-zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+         [class.has-file]="selectedFile">
+      <div *ngIf="!selectedFile" class="drop-prompt">
+        <span class="drop-icon">📁</span>
+        <p>Drag & drop your resume here</p>
+        <p class="drop-hint">or click to browse</p>
+        <input type="file" accept=".pdf,.docx" (change)="onFileSelected($event)" class="file-input" />
+      </div>
+      <div *ngIf="selectedFile" class="file-info">
+        <span class="file-icon">📎</span>
+        <span class="file-name">{{ fileName }}</span>
+        <button class="remove-btn" (click)="removeFile()">✕</button>
+      </div>
+    </div>
+
+    <!-- Job Description (optional) -->
+    <div class="form-group">
+      <label for="jd">Job Description <span class="optional">(optional)</span></label>
+      <textarea id="jd" [(ngModel)]="jobDescription" name="jd" rows="5"
+                placeholder="Paste the job description here for targeted analysis..."></textarea>
+    </div>
+
+    <button class="btn-primary" [disabled]="!selectedFile || loading" (click)="onSubmit()">
+      {{ loading ? 'Analyzing...' : '🚀 Analyze Resume' }}
+    </button>
+  </div>
+</div>

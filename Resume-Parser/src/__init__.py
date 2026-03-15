@@ -1,11 +1,13 @@
 """
 src/__init__.py - Package initializer for the Resume Parser source modules.
+
+Re-exports service classes for convenient access.
 """
 
-from .resume_parser import ResumeParser
-from .jd_matcher import JDMatcher
-from .skill_extractor import SkillExtractor
-from .text_extractor import TextExtractor
+from .services.resume_parser import ResumeParser
+from .services.jd_matcher import JDMatcher
+from .services.skill_extractor import SkillExtractor
+from .services.text_extractor import TextExtractor
 
 __all__ = [
     "ResumeParser",

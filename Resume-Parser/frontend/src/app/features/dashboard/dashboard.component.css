@@ -1,0 +1,261 @@
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+.dash-header {
+    margin-bottom: 32px;
+}
+
+.dash-header h1 {
+    color: #fff;
+    font-size: 28px;
+    margin: 0 0 8px;
+}
+
+.candidate-info {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+}
+
+/* Score Cards Row */
+.scores-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.score-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.score-card h3 {
+    color: #fff;
+    font-size: 16px;
+    margin: 0 0 20px;
+}
+
+.chart-wrapper {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.score-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-value {
+    color: #fff;
+    font-size: 42px;
+    font-weight: 700;
+}
+
+.score-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Skills Section */
+.skills-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.skills-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.skills-card h3 {
+    color: #fff;
+    font-size: 15px;
+    margin: 0 0 16px;
+}
+
+.count {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 400;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.tag-match {
+    background: rgba(46, 213, 115, 0.15);
+    color: #2ed573;
+    border: 1px solid rgba(46, 213, 115, 0.3);
+}
+
+.tag-missing {
+    background: rgba(255, 71, 87, 0.15);
+    color: #ff6b81;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.tag-all {
+    background: rgba(108, 99, 255, 0.15);
+    color: #a29bfe;
+    border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.empty-state {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* Recommendations */
+.recommendations-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.recommendations-card h3 {
+    color: #fff;
+    font-size: 16px;
+    margin: 0 0 20px;
+}
+
+.suggestion {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border-left: 3px solid #6c63ff;
+}
+
+.suggestion:last-child {
+    margin-bottom: 0;
+}
+
+.suggestion-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(108, 99, 255, 0.2);
+    color: #a29bfe;
+    margin-bottom: 8px;
+}
+
+.suggestion-badge[data-category="missing_skills"] {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff6b81;
+}
+
+.suggestion-badge[data-category="weak_experience"] {
+    background: rgba(255, 165, 2, 0.2);
+    color: #ffa502;
+}
+
+.suggestion-badge[data-category="measurable_achievements"] {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.suggestion p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Actions */
+.actions {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 12px 32px;
+    background: rgba(108, 99, 255, 0.15);
+    color: #a29bfe;
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(108, 99, 255, 0.25);
+}
+
+/* No data fallback */
+.no-data {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-data h2 {
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.no-data p {
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 24px;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #6c63ff, #4834d4);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .scores-row {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-row {
+        grid-template-columns: 1fr;
+    }
+}
